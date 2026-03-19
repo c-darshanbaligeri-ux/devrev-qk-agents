@@ -14,13 +14,13 @@ AI-powered agents that plan, build, and test snap-ins and connectors on DevRev's
 | **Snap-in Architect** | Researches external APIs (never guesses), makes 15 engineering decisions, generates complete deployable projects using ADaaS SDK |
 | **Snap-in Tester** | Writes Jest unit tests, performs UI automation via browser to install snap-in, configure mapping, run sync, and verify imported data |
 
-### Implementation vertical (coming soon)
+### Implementation vertical (v1.1 — ready)
 
-| Agent | What it will do |
-|-------|----------------|
-| Implementation PM | Plan dashboards, workflows, AI agents, PLuG configurations |
-| Implementation Architect | Build via DevRev APIs |
-| Implementation Tester | Verify dashboard data, workflow triggers, agent responses |
+| Agent | What it does |
+|-------|-------------|
+| **Implementation PM** | Gathers dashboard requirements in focused rounds, produces structured widget specs, handles both new dashboards and fix requests |
+| **Implementation Architect** | Generates complete widget JSON for widget-preview, assembles dashboard layouts, fixes existing widgets by diagnosing SQL/reference issues |
+| **Implementation Tester** | JSON validation checklist (catches 90% of errors before deployment) + UI verification via browser (widget-preview → dashboard-preview → Notebook cross-check) |
 
 ## Installation
 
@@ -28,17 +28,17 @@ AI-powered agents that plan, build, and test snap-ins and connectors on DevRev's
 
 ```bash
 # Direct from GitHub
-/plugin install --github <your-org>/devrev-agents
+/plugin install --github QK-SnapIn/devrev-qk-agents
 
 # Or from marketplace (after publishing)
-/plugin marketplace add <your-org>/devrev-agents-marketplace
+/plugin marketplace add QK-SnapIn/devrev-qk-agents-marketplace
 /plugin install devrev-agents@devrev-agents-marketplace
 ```
 
 ### Local testing
 
 ```bash
-git clone https://github.com/<your-org>/devrev-agents.git
+git clone https://github.com/QK-SnapIn/devrev-qk-agents.git
 cd devrev-agents
 
 # Option 1: Install locally
@@ -60,14 +60,15 @@ cp -r devrev-agents/skills/* /path/to/your/project/.cursor/skills/
 ### Commands (explicit invoke)
 
 ```bash
-# Plan a connector
+# Snap-in vertical
 /devrev:plan-snapin Build an AirSync connector for HubSpot
-
-# Build the code
 /devrev:build-snapin Implement the HubSpot connector from the approved TDD
-
-# Test it
 /devrev:test-snapin Write unit tests and run E2E test for the HubSpot connector
+
+# Implementation vertical
+/devrev:plan-implementation I need a support dashboard showing ticket volume, SLA compliance, and agent productivity
+/devrev:build-implementation Build the support dashboard from the approved spec
+/devrev:test-implementation Validate the widget JSON and verify metrics against Notebook
 ```
 
 ### Natural language (skills auto-trigger)

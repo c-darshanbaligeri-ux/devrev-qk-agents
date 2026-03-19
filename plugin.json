@@ -22,7 +22,10 @@
     "./commands/plan-snapin.md",
     "./commands/build-snapin.md",
     "./commands/test-snapin.md",
-    "./commands/improve-skill.md"
+    "./commands/improve-skill.md",
+    "./commands/plan-implementation.md",
+    "./commands/build-implementation.md",
+    "./commands/test-implementation.md"
   ],
   "agents": "./agents/",
   "skills": "./skills/"

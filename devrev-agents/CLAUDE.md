@@ -4,10 +4,18 @@ AI-powered agents for building on DevRev's AgentOS platform. Plan, build, and te
 
 ## Available Commands
 
+### Snap-in vertical
 - `/devrev:plan-snapin` — Plan a snap-in or AirSync connector (PM agent)
 - `/devrev:build-snapin` — Build complete deployable snap-in code (Architect agent)
 - `/devrev:test-snapin` — Test with unit tests + UI automation (Tester agent)
-- `/devrev:improve-skill` — Improve agent skills based on real usage feedback
+
+### Implementation vertical
+- `/devrev:plan-implementation` — Plan dashboards, widgets, analytics (PM agent)
+- `/devrev:build-implementation` — Generate widget JSON + dashboard layout (Architect agent)
+- `/devrev:test-implementation` — JSON validation + UI verification (Tester agent)
+
+### Cross-cutting
+- `/devrev:improve-skill` — Report mistakes, update agent skills (Self-learning agent)
 
 ## Agent Pipeline
 
@@ -29,6 +37,11 @@ Each agent hands off to the next with a structured brief. Bugs flow back upstrea
 - **Batching**: `adapter.initializeRepos(repos)` + `adapter.getRepo("type").push(items)` — SDK batches automatically
 - **Mapping**: `chef-cli configure-mappings` generates `initial_domain_mapping.json`
 - **Metadata**: `chef-cli validate-metadata` validates `external_domain_metadata.json`
+- **Dashboard creation**: Widget JSON → widget-preview → widget ID → dashboard-preview → dashboard ID
+- **Widget JSON**: data_sources (oasis) → dimensions + measures → sub_widgets → visualization
+- **SQL rules**: No SELECT *, no table aliases in sql_expression, list every column, fully qualify all references
+- **Visualization types**: metric, line, column, bar, table, donut, pie, packed_bubble, heatmap
+- **Dashboard URL**: `https://app.devrev.ai/<slug>/dashboard?dashboardId=<ID>`
 
 ## Real Examples
 
