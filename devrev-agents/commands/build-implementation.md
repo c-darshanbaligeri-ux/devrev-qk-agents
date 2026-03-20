@@ -1,5 +1,5 @@
 ---
-name: build-implementation
+name: devrev:build-implementation
 description: Build DevRev dashboard widgets. Generates complete widget JSON for widget-preview, dashboard layout for dashboard-preview. Fix mode fetches existing JSON, diagnoses issues, and produces corrected JSON with diff.
 ---
 

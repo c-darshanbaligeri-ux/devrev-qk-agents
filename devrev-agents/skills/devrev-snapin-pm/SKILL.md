@@ -80,11 +80,13 @@ Read `references/discovery-questions.md` for the full question bank organized by
 
 **For AirSync connectors specifically**, also read `references/adaas-flow.md` to understand the standard ADaaS pipeline phases. Your TDD must map to these phases.
 
-**Real examples are available** in `references/examples/` — study these to match the tone, depth, and format your team actually uses:
-- `Slack_ADaaS_TDD__1_.pdf` — AirSync TDD for Slack channel import
-- `MondayCom_TDD__1_.pdf` — AirSync TDD for Monday.com integration
-- `Planhat_Airdrop_PRD.pdf` — PRD for Planhat bidirectional sync
-- `Snowflake_ADAAS_PRD.pdf` — PRD for Snowflake one-way import
+**Real examples are available** in the `examples/` directory at the plugin root — study these to match the tone, depth, and format your team actually uses:
+- `example-slack-tdd.md` — AirSync TDD for Slack channel import
+- `example-monday-tdd.md` — AirSync TDD for Monday.com integration
+- `example-planhat-prd.md` — PRD for Planhat bidirectional sync
+- `example-snowflake-prd.md` — PRD for Snowflake one-way import
+- `example-trello-prd.md` — PRD for Trello board/card import
+- `example-trello-tdd.md` — TDD for Trello AirSync connector
 
 ### Phase 3: Feasibility Check
 
@@ -109,7 +111,7 @@ Generate a PRD using the template in `references/prd-template.md`. The PRD shoul
 
 ### Phase 5: TDD Creation
 
-After PRD approval, generate a Technical Design Document using `references/tdd-template.md`. The TDD follows the standard DevRev format (matching real TDDs in `references/examples/`):
+After PRD approval, generate a Technical Design Document using `references/tdd-template.md`. The TDD follows the standard DevRev format (matching real TDDs in the `examples/` directory):
 
 **Standard TDD sections** (from real Slack/Monday.com TDDs):
 1. Overview (metadata table: author, reviewers, status, date)

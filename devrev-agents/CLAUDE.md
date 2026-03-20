@@ -16,6 +16,7 @@ AI-powered agents for building on DevRev's AgentOS platform. Plan, build, and te
 
 ### Cross-cutting
 - `/devrev:improve-skill` — Report mistakes, update agent skills (Self-learning agent)
+- `/devrev:update` — Update plugin to the latest version from GitHub
 
 ## Agent Pipeline
 
@@ -25,7 +26,10 @@ User request → PM (plan) → Architect (build) → Tester (verify)
                   └──── bugs back to architect/PM ─────┘
 ```
 
-Each agent hands off to the next with a structured brief. Bugs flow back upstream.
+Each agent hands off to the next with a structured brief. Bugs flow back upstream:
+- **Code bugs** (wrong API call, bad manifest, SDK error) → back to **Architect**
+- **Requirements bugs** (missing field, wrong scope, unclear mapping) → back to **PM**
+- **Systematic agent errors** (skill produces same mistake repeatedly) → **Skill Improver** (`/devrev:improve-skill`)
 
 ## Key DevRev Technical Facts
 
@@ -45,8 +49,10 @@ Each agent hands off to the next with a structured brief. Bugs flow back upstrea
 
 ## Real Examples
 
-PRD and TDD examples from actual DevRev projects are in `/examples/`:
-- Slack ADaaS TDD — channel import connector
-- Monday.com TDD — board/item import connector
-- Planhat PRD — bidirectional customer success sync
-- Snowflake PRD — one-way table import
+PRD and TDD examples from actual DevRev projects are in `examples/`:
+- `example-slack-tdd.md` — Slack channel import (OAuth, cursor pagination, mention conversion)
+- `example-monday-tdd.md` — Monday.com board/item import (GraphQL, 20 column types)
+- `example-planhat-prd.md` — Planhat bidirectional sync (10 object types, API key auth)
+- `example-snowflake-prd.md` — Snowflake table import (JWT + OAuth, Streams for incremental)
+- `example-trello-prd.md` — Trello board/card import PRD
+- `example-trello-tdd.md` — Trello AirSync connector TDD

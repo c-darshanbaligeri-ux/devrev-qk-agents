@@ -208,9 +208,7 @@ Generate a `TECHNICAL_DECISIONS.md` file documenting all 15 engineering decision
 
 ### Phase 4: Generate code
 
-Read the appropriate reference file and generate ALL project files to disk.
-
-**For Simple snap-ins, generate:**
+**For Simple snap-ins** — write all files from scratch (read `references/simple-snapin.md`):
 ```
 <project>/
 ├── manifest.yaml
@@ -229,55 +227,57 @@ Read the appropriate reference file and generate ALL project files to disk.
 │           └── <test_event>.json
 ```
 
-**For AirSync snap-ins, generate (follow `references/airsync-template.md` exactly):**
-```
-airdrop-<system>-snap-in/
-├── manifest.yaml
-├── Makefile
-├── .env.example
-├── .gitignore
-├── README.md
-├── TECHNICAL_DECISIONS.md
-├── code/
-│   ├── .gitignore
-│   ├── .npmrc
-│   ├── .prettierrc
-│   ├── .prettierignore
-│   ├── babel.config.js
-│   ├── jest.config.js
-│   ├── nodemon.json
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── src/
-│       ├── index.ts
-│       ├── function-factory.ts
-│       ├── main.ts
-│       ├── test-runner/
-│       │   └── test-runner.ts
-│       ├── fixtures/
-│       │   └── positive-case.json
-│       └── functions/
-│           ├── external-system/          # All external-system-specific code
-│           │   ├── client.ts             # API client (axios + retry + rate limiting)
-│           │   ├── data-normalization.ts
-│           │   ├── data-denormalization.ts
-│           │   ├── external_domain_metadata.json
-│           │   └── initial_domain_mapping.json
-│           ├── extraction/
-│           │   ├── index.ts              # spawn() entry — SDK auto-routes events
-│           │   └── workers/
-│           │       ├── external-sync-units-extraction.ts
-│           │       ├── metadata-extraction.ts
-│           │       ├── data-extraction.ts
-│           │       └── attachments-extraction.ts
-│           └── loading/
-│               ├── index.ts              # spawn() entry
-│               └── workers/
-│                   ├── load-data.ts
-│                   └── load-attachments.ts
+**For AirSync snap-ins** — use **clone-and-rename** from the Asana template repo (read `references/airsync-template.md` for the full procedure):
+
+#### Step 1: Scaffold from template (automated)
+
+```bash
+# Clone the production Asana snap-in as template
+git clone --depth 1 https://github.com/devrev/airdrop-asana-snap-in.git airdrop-<system>-snap-in
+
+# Remove template-specific files
+cd airdrop-<system>-snap-in
+rm -rf .git .circleci .github dummy_data_generator
+
+# Rename the system-specific folder
+mv code/src/functions/asana code/src/functions/<system>
+
+# Find-and-replace "asana" → "<system>" across all files (case-insensitive for display names)
+# Target files: manifest.yaml, package.json, README.md, all .ts files with asana imports, fixture JSON
+# Replace patterns:
+#   "asana" → "<system>" (in slugs, folder refs, imports)
+#   "Asana" → "<System>" (in display names, descriptions)
+#   "AsanaClient" → "<System>Client" (in class names)
+#   "asanaClient" → "<system>Client" (in variable names)
 ```
 
-Use `create_file` for every file. Use `present_files` to deliver the project.
+This gives you a working scaffold with 31 files already handled (25 keep-as-is + 6 handled by find-and-replace). Only 9 system-specific files need rewriting.
+
+#### Step 2: Rewrite system-specific files (requires research from Phase 2)
+
+Only these 9 files need rewriting — everything else is production-ready from the template:
+
+| File | What to rewrite |
+|------|----------------|
+| `functions/<system>/client.ts` | API base URL, endpoints, auth headers, pagination, rate limiting |
+| `functions/<system>/data-normalization.ts` | External fields → normalized schema mappings |
+| `functions/<system>/data-denormalization.ts` | Normalized → external API payload format |
+| `functions/<system>/external_domain_metadata.json` | External system schema (record types, fields, types) |
+| `functions/<system>/initial_domain_mapping.json` | External ↔ DevRev field mappings |
+| `extraction/workers/external-sync-units-extraction.ts` | Fetch containers/projects/boards from new API |
+| `extraction/workers/data-extraction.ts` | Extract items by type with system-specific pagination |
+| `loading/workers/load-data.ts` | Create/update items via new system's API |
+| `manifest.yaml` | Connection config, auth type, API endpoints, system name |
+
+Use `references/airsync-template.md` for the code patterns and TODO placeholders for each rewrite file.
+
+#### Step 3: Verify scaffold
+
+```bash
+cd code && npm install && npm audit && npm run build
+```
+
+Fix any TypeScript errors or security vulnerabilities before proceeding to Phase 5.
 
 ### Phase 5: Deployment commands
 

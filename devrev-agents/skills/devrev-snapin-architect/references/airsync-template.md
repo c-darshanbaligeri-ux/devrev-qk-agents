@@ -1,6 +1,83 @@
 # AirSync Snap-in Template (Generic)
 
-> **Source**: Stripped from [devrev/airdrop-asana-snap-in](https://github.com/devrev/airdrop-asana-snap-in) and cross-referenced with a production Zoho CRM connector. All external-system-specific code removed. Use this as the starting scaffold for any new AirSync connector.
+> **Source**: Stripped from [devrev/airdrop-asana-snap-in](https://github.com/devrev/airdrop-asana-snap-in) and cross-referenced with a production Zoho CRM connector.
+
+---
+
+## Build Method: Clone-and-Rename (Primary)
+
+Instead of writing 20+ files from scratch, clone the production Asana snap-in and adapt it. This keeps all config, boilerplate, SDK patterns, and test infrastructure identical across every AirSync connector.
+
+### Step 1: Scaffold from template
+
+```bash
+# Clone the production Asana snap-in as template
+git clone --depth 1 https://github.com/devrev/airdrop-asana-snap-in.git airdrop-<system>-snap-in
+cd airdrop-<system>-snap-in
+
+# Remove template-specific files that don't belong in new snap-ins
+rm -rf .git .circleci .github dummy_data_generator
+
+# Rename the system-specific folder
+mv code/src/functions/asana code/src/functions/<system>
+```
+
+### Step 2: Find-and-replace "asana" references
+
+Apply these replacements across the entire project:
+
+| Pattern | Replace with | Files affected |
+|---------|-------------|----------------|
+| `asana` (in slugs, paths, imports) | `<system>` | manifest.yaml, package.json, all .ts files |
+| `Asana` (in display names) | `<System>` (capitalized) | manifest.yaml, README.md, package.json |
+| `AsanaClient` (class name) | `<System>Client` | client.ts, all worker .ts files that import it |
+| `asanaClient` (variable name) | `<system>Client` | all worker .ts files |
+| `airdrop-asana-snap-in` (project name) | `airdrop-<system>-snap-in` | package.json, manifest.yaml |
+| `airdrop-asana-extractor` (slug) | `airdrop-<system>-extractor` | manifest.yaml |
+
+### Step 3: File classification — what to keep, rename, or rewrite
+
+After the find-and-replace, files fall into three categories:
+
+**KEEP AS-IS (23 files, 56%)** — zero changes needed:
+- All config: `tsconfig.json`, `.npmrc`, `.prettierrc`, `.prettierignore`, `babel.config.js`, `jest.config.js`, `tsconfig.eslint.json`, `nodemon.json`
+- SDK boilerplate: `src/index.ts`, `src/function-factory.ts`, `src/main.ts`, `src/test-runner/test-runner.ts`
+- Loading orchestrator: `loading/index.ts`
+- Generic workers: `extraction/workers/attachments-extraction.ts`
+- Infrastructure: `Makefile`, `.env.example`, `.devrev/repo.yml`, deploy/cleanup scripts
+- Test framework: `code/test/` directory (all files)
+
+**ALREADY HANDLED BY FIND-AND-REPLACE (9 files, 22%)**:
+- `package.json` — project name/description swapped
+- `README.md` — system name swapped (content update recommended)
+- `src/fixtures/positive-case.json` — references updated
+- `loading/workers/load-attachments.ts` — import paths updated
+- `extraction/index.ts` — import path `../asana/` → `../<system>/`
+- `extraction/workers/metadata-extraction.ts` — import path `../../asana/` → `../../<system>/`
+- `.github/CODEOWNERS` — removed in Step 1
+
+**REWRITE WITH SYSTEM-SPECIFIC LOGIC (9 files, 22%)** — use research from Phase 2:
+1. `functions/<system>/client.ts` — API base URL, endpoints, auth, pagination
+2. `functions/<system>/data-normalization.ts` — external fields → normalized schema
+3. `functions/<system>/data-denormalization.ts` — normalized → external API payload
+4. `functions/<system>/external_domain_metadata.json` — external system schema
+5. `functions/<system>/initial_domain_mapping.json` — external ↔ DevRev field mappings
+6. `extraction/workers/external-sync-units-extraction.ts` — fetch containers/projects
+7. `extraction/workers/data-extraction.ts` — extract items with pagination
+8. `loading/workers/load-data.ts` — create/update items in external system
+9. `manifest.yaml` — auth/keyring config, connection endpoints
+
+### Step 4: Verify the scaffold builds
+
+```bash
+cd code && npm install && npm audit && npm run build
+```
+
+Fix any TypeScript compilation errors before moving on.
+
+### When to use the reference code below
+
+When rewriting the 10 system-specific files, use the **TODO-annotated templates below** as your guide. They show the exact SDK patterns, function signatures, and data structures expected by the Airdrop platform.
 
 ---
 

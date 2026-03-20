@@ -187,7 +187,15 @@ devrev-agents/
 │   ├── devrev-imp-tester/
 │   └── devrev-skill-improver/
 ├── examples/                          # Real PRD/TDD examples
-├── docs/                              # Changelog
+│   ├── example-slack-tdd.md
+│   ├── example-monday-tdd.md
+│   ├── example-planhat-prd.md
+│   ├── example-snowflake-prd.md
+│   ├── example-trello-prd.md
+│   └── example-trello-tdd.md
+├── docs/                              # Changelog + project guide
+│   ├── CHANGELOG.md
+│   └── PROJECT-GUIDE.md
 └── .claude-plugin/plugin.json         # Plugin manifest
 ```
 

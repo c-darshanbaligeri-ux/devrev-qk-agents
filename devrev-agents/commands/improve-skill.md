@@ -1,4 +1,5 @@
 ---
+name: devrev:improve-skill
 description: Report a mistake or new learning to improve DevRev agent skills. Use when an agent was wrong, an API changed, a pattern needs updating, or you want the agents to remember something for next time.
 ---
 

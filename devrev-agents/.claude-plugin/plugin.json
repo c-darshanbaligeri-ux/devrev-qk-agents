@@ -1,6 +1,6 @@
 {
-  "name": "devrev-agents",
-  "version": "1.0.0",
+  "name": "devrev",
+  "version": "1.1.0",
   "description": "DevRev implementation agents \u2014 plan, build, and test snap-ins, connectors, dashboards, and workflows on DevRev's AgentOS platform. Covers the full pipeline: PM (requirements + PRD + TDD) \u2192 Architect (research + decisions + code) \u2192 Tester (unit tests + UI automation).",
   "author": {
     "name": "DevRev Implementation Team"
@@ -25,8 +25,25 @@
     "./commands/improve-skill.md",
     "./commands/plan-implementation.md",
     "./commands/build-implementation.md",
-    "./commands/test-implementation.md"
+    "./commands/test-implementation.md",
+    "./commands/update.md"
   ],
-  "agents": "./agents/",
-  "skills": "./skills/"
+  "agents": [
+    "./agents/implementation-architect.md",
+    "./agents/implementation-pm.md",
+    "./agents/implementation-tester.md",
+    "./agents/skill-improver.md",
+    "./agents/snapin-architect.md",
+    "./agents/snapin-pm.md",
+    "./agents/snapin-tester.md"
+  ],
+  "skills": [
+    "./skills/devrev-imp-architect/SKILL.md",
+    "./skills/devrev-imp-pm/SKILL.md",
+    "./skills/devrev-imp-tester/SKILL.md",
+    "./skills/devrev-skill-improver/SKILL.md",
+    "./skills/devrev-snapin-architect/SKILL.md",
+    "./skills/devrev-snapin-pm/SKILL.md",
+    "./skills/devrev-snapin-tester/SKILL.md"
+  ]
 }
