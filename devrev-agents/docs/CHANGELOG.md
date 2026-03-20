@@ -38,6 +38,11 @@ Track every improvement made to DevRev agent skills based on real usage feedback
 - **Change**: Added explicit rules: always use targeted tools first, never call full guides unless targeted tools insufficient, use short search queries.
 - **Files changed**: `skills/devrev-snapin-architect/SKILL.md` (tool selection rules)
 
+#### Snap-in Builder MCP URL published
+- **Trigger**: All files used `<MCP_SERVER_URL>` placeholder requiring users to ask the team for the URL.
+- **Change**: Replaced all 18 occurrences across 10 files with `https://snapin-builder-mcp.onrender.com`. Removed stale "Ask the team for the current MCP server URL" notes.
+- **Files changed**: `README.md` (root + inner), `CLAUDE.md`, `commands/build-snapin.md`, `commands/generate-metadata.md`, `commands/search-guide.md`, `commands/update-snapin.md`, `skills/devrev-snapin-architect/SKILL.md`, `skills/devrev-snapin-architect/references/mcp-tools.md`, `docs/CHANGELOG.md`
+
 ---
 
 ## v1.2.0 — 2026-03-20
