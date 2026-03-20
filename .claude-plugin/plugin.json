@@ -26,7 +26,10 @@
     "./devrev-agents/commands/plan-implementation.md",
     "./devrev-agents/commands/build-implementation.md",
     "./devrev-agents/commands/test-implementation.md",
-    "./devrev-agents/commands/update.md"
+    "./devrev-agents/commands/update.md",
+    "./devrev-agents/commands/update-snapin.md",
+    "./devrev-agents/commands/generate-metadata.md",
+    "./devrev-agents/commands/search-guide.md"
   ],
   "agents": [
     "./devrev-agents/agents/implementation-architect.md",

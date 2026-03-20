@@ -13,7 +13,7 @@ git clone https://github.com/QK-SnapIn/devrev-qk-agents.git
 claude --plugin-dir ./devrev-qk-agents
 ```
 
-All 7 agents, 8 commands, and 7 skills are ready to use.
+All 7 agents, 11 commands, and 7 skills are ready to use.
 
 To update to the latest version, pull the repo and restart Claude Code — or run `/devrev:update` from within a session.
 
@@ -23,6 +23,30 @@ To update to the latest version, pull the repo and restart Claude Code — or ru
 git clone https://github.com/QK-SnapIn/devrev-qk-agents.git
 cp -r devrev-qk-agents/devrev-agents/skills/* /path/to/your/project/.cursor/skills/
 ```
+
+### MCP Server Setup (Required for snap-in commands)
+
+The snap-in commands (`/devrev:build-snapin`, `/devrev:update-snapin`, `/devrev:generate-metadata`, `/devrev:search-guide`) require the **Snap-in Builder MCP** server for guides, validation, and code templates.
+
+**Claude Code:**
+
+```bash
+claude mcp add snapin-builder --transport http -s project https://snapin-builder-mcp.onrender.com/mcp
+```
+
+**Cursor** — add to `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "snapin-builder": {
+      "type": "streamable-http",
+      "url": "https://snapin-builder-mcp.onrender.com/mcp"
+    }
+  }
+}
+```
+
 
 ## What's inside
 
@@ -58,6 +82,9 @@ cp -r devrev-qk-agents/devrev-agents/skills/* /path/to/your/project/.cursor/skil
 | `/devrev:plan-implementation` | Plan dashboards, widgets, analytics (PM agent) |
 | `/devrev:build-implementation` | Generate widget JSON + dashboard layout (Architect agent) |
 | `/devrev:test-implementation` | JSON validation + UI verification (Tester agent) |
+| `/devrev:update-snapin` | Update an existing snap-in (add entity, fix pagination, switch auth) |
+| `/devrev:generate-metadata` | Generate metadata + mapping JSON with validation |
+| `/devrev:search-guide` | Quick reference lookup for AirSync patterns |
 | `/devrev:improve-skill` | Report mistakes, update agent skills (Self-learning agent) |
 | `/devrev:update` | Update plugin to the latest version |
 

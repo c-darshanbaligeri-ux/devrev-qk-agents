@@ -40,7 +40,31 @@ AI-powered agents that plan, build, and test snap-ins, connectors, and dashboard
 /plugin install --github QK-SnapIn/devrev-qk-agents
 ```
 
-That's it. All 7 agents, 8 commands, and 7 skills are ready to use.
+That's it. All 7 agents, 11 commands, and 7 skills are ready to use.
+
+### MCP Server Setup (Required for snap-in commands)
+
+The snap-in commands require the **Snap-in Builder MCP** server for guides, validation, and code templates.
+
+**Claude Code:**
+
+```bash
+claude mcp add snapin-builder --transport http -s project https://snapin-builder-mcp.onrender.com/mcp
+```
+
+**Cursor** — add to `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "snapin-builder": {
+      "type": "streamable-http",
+      "url": "https://snapin-builder-mcp.onrender.com/mcp"
+    }
+  }
+}
+```
+
 
 ### Update to latest
 
@@ -70,6 +94,9 @@ cp -r devrev-qk-agents/devrev-agents/skills/* /path/to/your/project/.cursor/skil
 | `/devrev:plan-snapin` | Plan a snap-in or AirSync connector (PM agent) |
 | `/devrev:build-snapin` | Build complete deployable snap-in code (Architect agent) |
 | `/devrev:test-snapin` | Test with unit tests + UI automation (Tester agent) |
+| `/devrev:update-snapin` | Update an existing snap-in (add entity, fix pagination, switch auth) |
+| `/devrev:generate-metadata` | Generate metadata + mapping JSON with validation |
+| `/devrev:search-guide` | Quick reference lookup for AirSync patterns |
 | `/devrev:plan-implementation` | Plan dashboards, widgets, analytics (PM agent) |
 | `/devrev:build-implementation` | Generate widget JSON + dashboard layout (Architect agent) |
 | `/devrev:test-implementation` | JSON validation + UI verification (Tester agent) |
