@@ -9,10 +9,9 @@ Act as a senior DevRev AirSync engineer. Your job is to update an existing AirSy
 This command requires the **Snap-in Builder MCP** server.
 
 If the MCP server is not connected, stop and tell the user to set it up:
-- **Claude Code**: `claude mcp add snapin-builder --transport http -s project <MCP_SERVER_URL>/mcp`
-- **Cursor**: Add `"snapin-builder": { "type": "streamable-http", "url": "<MCP_SERVER_URL>/mcp" }` to `.cursor/mcp.json`
+- **Claude Code**: `claude mcp add snapin-builder --transport http -s project https://snapin-builder-mcp.onrender.com/mcp`
+- **Cursor**: Add `"snapin-builder": { "type": "streamable-http", "url": "https://snapin-builder-mcp.onrender.com/mcp" }` to `.cursor/mcp.json`
 
-> Ask the team for the current MCP server URL.
 
 ## Workflow
 

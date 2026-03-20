@@ -50,7 +50,7 @@ Integrated the Snap-in Builder MCP server as a required dependency for all snap-
 - **Trigger**: Snap-in commands relied solely on embedded reference files for AirSync knowledge. No runtime validation of generated metadata, no targeted code pattern lookups, no searchable guide content.
 - **Change**: All snap-in commands now require the Snap-in Builder MCP server. Commands check for MCP connectivity at startup and provide setup instructions if not connected.
 - **Files changed**: `commands/build-snapin.md`, `skills/devrev-snapin-architect/SKILL.md`, `agents/snapin-architect.md`, `CLAUDE.md`, `README.md` (root + inner)
-- **Setup**: `claude mcp add snapin-builder --transport http -s project <MCP_SERVER_URL>/mcp`
+- **Setup**: `claude mcp add snapin-builder --transport http -s project https://snapin-builder-mcp.onrender.com/mcp`
 
 #### 3 new commands
 - **`/devrev:update-snapin`** — Targeted modifications to existing snap-ins (add entity, fix pagination, switch auth, add attachments, add bidirectional loading). Reads existing project first, uses MCP tools for the right patterns, validates metadata after changes.

@@ -44,7 +44,7 @@ Each agent hands off to the next with a structured brief. Bugs flow back upstrea
 - **Batching**: `adapter.initializeRepos(repos)` + `adapter.getRepo("type").push(items)` — SDK batches automatically
 - **Mapping**: `chef-cli configure-mappings` generates `initial_domain_mapping.json`
 - **Metadata**: `chef-cli validate-metadata` validates `external_domain_metadata.json`
-- **Snap-in Builder MCP**: Required for snap-in commands. Provides `validate_metadata`, `get_code_template` (18 patterns), `get_decision_guide`, `scaffold_snapin`, `get_devrev_object_schema`, and guide search. Setup: `claude mcp add snapin-builder --transport http -s project <MCP_SERVER_URL>/mcp`
+- **Snap-in Builder MCP**: Required for snap-in commands. Provides `validate_metadata`, `get_code_template` (18 patterns), `get_decision_guide`, `scaffold_snapin`, `get_devrev_object_schema`, and guide search. Setup: `claude mcp add snapin-builder --transport http -s project https://snapin-builder-mcp.onrender.com/mcp`
 - **Dashboard creation**: Widget JSON → widget-preview → widget ID → dashboard-preview → dashboard ID
 - **Widget JSON**: data_sources (oasis) → dimensions + measures → sub_widgets → visualization
 - **SQL rules**: No SELECT *, no table aliases in sql_expression, list every column, fully qualify all references

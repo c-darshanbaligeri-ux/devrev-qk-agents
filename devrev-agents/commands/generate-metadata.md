@@ -11,8 +11,8 @@ This command requires **two MCP servers**:
 2. **DevRev AirSync MCP** (via `chef-cli`) — for testing mappings and validating metadata
 
 If either MCP server is not connected, stop and tell the user to set them up:
-- **Snap-in Builder MCP (Claude Code)**: `claude mcp add snapin-builder --transport http -s project <MCP_SERVER_URL>/mcp`
-- **Snap-in Builder MCP (Cursor)**: Add `"snapin-builder": { "type": "streamable-http", "url": "<MCP_SERVER_URL>/mcp" }` to `.cursor/mcp.json`
+- **Snap-in Builder MCP (Claude Code)**: `claude mcp add snapin-builder --transport http -s project https://snapin-builder-mcp.onrender.com/mcp`
+- **Snap-in Builder MCP (Cursor)**: Add `"snapin-builder": { "type": "streamable-http", "url": "https://snapin-builder-mcp.onrender.com/mcp" }` to `.cursor/mcp.json`
 - **AirSync MCP (Claude Code)**: `claude mcp add airsync chef-cli mcp initial-mapping`
 - **AirSync MCP (Cursor)**: Add `"AirSync": { "command": "chef-cli", "args": ["mcp", "initial-mapping"] }` to `.cursor/mcp.json`
 - **AirSync Docs**: https://developer.devrev.ai/airsync/mcp

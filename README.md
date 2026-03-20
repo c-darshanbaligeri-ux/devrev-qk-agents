@@ -31,7 +31,7 @@ The snap-in commands (`/devrev:build-snapin`, `/devrev:update-snapin`, `/devrev:
 **Claude Code:**
 
 ```bash
-claude mcp add snapin-builder --transport http -s project <MCP_SERVER_URL>/mcp
+claude mcp add snapin-builder --transport http -s project https://snapin-builder-mcp.onrender.com/mcp
 ```
 
 **Cursor** — add to `.cursor/mcp.json`:
@@ -41,13 +41,12 @@ claude mcp add snapin-builder --transport http -s project <MCP_SERVER_URL>/mcp
   "mcpServers": {
     "snapin-builder": {
       "type": "streamable-http",
-      "url": "<MCP_SERVER_URL>/mcp"
+      "url": "https://snapin-builder-mcp.onrender.com/mcp"
     }
   }
 }
 ```
 
-> Ask the team for the current MCP server URL.
 
 ## What's inside
 
