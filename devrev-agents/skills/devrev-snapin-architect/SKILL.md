@@ -36,7 +36,15 @@ Available tools:
 | `search_snapin_guide` | Full-text search across both guides |
 | `suggest_guide_update` | Report a correction to improve the guides |
 
-**Prefer targeted tools** (`get_decision_guide`, `get_code_template`, `get_devrev_object_schema`) over loading full guides to keep context lean.
+**IMPORTANT — tool selection rules:**
+1. ALWAYS use targeted tools (`get_decision_guide`, `get_code_template`, `get_devrev_object_schema`, `validate_metadata`, `scaffold_snapin`) before full guides
+2. NEVER call `build_snapin_guide` or `metadata_guide` unless a targeted tool doesn't have the answer — they dump 10-15k tokens
+3. `search_snapin_guide` needs short specific queries (e.g., "rate limiting", "OAuth2") — NOT long phrases
+
+**Three MCP servers:**
+- **devrev-sdk MCP** — for SDK version updates, breaking changes, new APIs
+- **snapin-builder MCP** — for code patterns (`get_code_template`), decisions (`get_decision_guide`), metadata validation (`validate_metadata`)
+- **chef-cli MCP** (https://developer.devrev.ai/airsync/mcp) — for building `initial_domain_mapping.json` and AirSync mapping configuration
 
 ## Your responsibilities
 
@@ -269,7 +277,28 @@ This gives you 31 files already handled (25 keep-as-is + 6 handled by find-and-r
 
 **Alternative**: Call `scaffold_snapin` MCP tool if you want the bare official `devrev/airdrop-template` skeleton instead (fewer files but requires more code from scratch).
 
-#### Step 2: Rewrite system-specific files (requires research from Phase 2)
+#### Step 2: Update SDK and restructure
+
+**Update SDK:** The Asana template uses an old `@devrev/ts-adaas` version. Update it:
+```bash
+cd code && npm install @devrev/ts-adaas@latest --save-exact
+```
+Use **devrev-sdk MCP** to check for breaking changes or new APIs in the latest version.
+
+**Restructure — add `common/` directory:**
+The Asana template puts state inline in `extraction/index.ts` and has no type definitions. Create these files under `functions/common/`:
+
+| File | What it contains | Required? |
+|------|-----------------|-----------|
+| `common/state.ts` | Extractor state — per-entity pagination cursors, completion flags, sync timestamps. Move state OUT of `extraction/index.ts` | Yes |
+| `common/types.ts` | TypeScript interfaces for external API response shapes. Never use `any` for API data | Yes |
+| `common/utils.ts` | Shared utility functions (e.g., formatTimestamp, shouldDelay). Only create if common functions are needed | Optional |
+
+Update `extraction/index.ts` to import state from `common/state.ts` instead of defining it inline.
+
+Use **snapin-builder MCP** `get_code_template` to get the correct patterns for each file.
+
+#### Step 3: Rewrite system-specific files (requires research from Phase 2)
 
 **Use MCP tools for each file**:
 - Call `get_code_template("data-extraction")` BEFORE writing data-extraction.ts (mandatory — follow the class-based Extractor pattern exactly)
@@ -296,7 +325,7 @@ Only these 9 files need rewriting — everything else is production-ready from t
 
 Use `references/airsync-template.md` for the code patterns and TODO placeholders for each rewrite file.
 
-#### Step 3: Verify scaffold
+#### Step 4: Verify scaffold
 
 ```bash
 cd code && npm install && npm audit && npm run build
@@ -340,7 +369,17 @@ chef-cli validate-metadata < external_domain_metadata.json
 chef-cli configure-mappings --env prod --idm initial_domain_mapping.json
 ```
 
-### Phase 6: Tester handoff
+### Phase 6: Code review & optimization
+
+After all code is generated and the build passes, review the project:
+
+1. **Metadata validation** — Call `validate_metadata` on the final `external_domain_metadata.json`. Fix all errors and re-validate until clean.
+2. **SDK pattern compliance** — Use **snapin-builder MCP** `get_code_template` to verify generated code matches the latest patterns.
+3. **Build verification** — `npm run build && npm run lint` — fix all issues.
+
+Present findings to the user with any fixes applied.
+
+### Phase 7: Tester handoff
 
 Output a structured brief for the tester agent:
 
