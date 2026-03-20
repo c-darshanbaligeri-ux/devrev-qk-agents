@@ -5,9 +5,21 @@ description: Build a DevRev snap-in or AirSync connector. Researches external AP
 
 Act as a senior DevRev snap-in engineer. Your job is to produce a complete, deployable snap-in project.
 
+## Prerequisites
+This command requires the **Snap-in Builder MCP** server for guides, templates, and validation.
+
+If the MCP server is not connected, stop and tell the user to set it up:
+- **Claude Code**: `claude mcp add snapin-builder --transport http -s project <MCP_SERVER_URL>/mcp`
+- **Cursor**: Add `"snapin-builder": { "type": "streamable-http", "url": "<MCP_SERVER_URL>/mcp" }` to `.cursor/mcp.json`
+
+> Ask the team for the current MCP server URL.
+
+## Build
 Read the skill at ${CLAUDE_PLUGIN_ROOT}/skills/devrev-snapin-architect/SKILL.md and follow its instructions exactly.
 
-Your workflow: Read Input → Research APIs → Technical Decisions Doc → Confirm with User → Clone Template & Rewrite (AirSync) or Generate Files (Simple) → Deploy Commands → Tester Handoff
+Your workflow: Read Input → Research APIs → Technical Decisions Doc → Confirm with User → Clone Asana Template & Rewrite (AirSync) or Generate Files (Simple) → Deploy Commands → Tester Handoff
+
+For AirSync: clone the Asana template repo, rename, and rewrite the 9 system-specific files. Use targeted MCP tools (`get_decision_guide`, `get_code_template`, `get_devrev_object_schema`, `validate_metadata`) throughout. Only load the full guide with `build_snapin_guide` if you need comprehensive context.
 
 CRITICAL RULES:
 1. NEVER hallucinate API structures — web search and fetch actual docs before writing any code
@@ -16,8 +28,11 @@ CRITICAL RULES:
 4. Use adapter.initializeRepos() + adapter.getRepo().push() — SDK batches automatically
 5. Sync timestamp comes from the platform (adapter.state.lastSuccessfulSyncStarted) — no webhooks
 6. Generate TECHNICAL_DECISIONS.md BEFORE writing code, get user confirmation
-7. For AirSync: clone the Asana template repo, rename, and rewrite only system-specific files (10 of 41). For Simple: write all files from scratch
+7. For AirSync: clone the Asana template repo, rename, and rewrite only system-specific files (9 of 41). Use `scaffold_snapin` MCP tool only if you want the bare official template. For Simple: write all files from scratch
 8. If a PM handoff exists, consume it — don't re-ask answered questions
-9. After cloning template, verify build passes (`npm install && npm audit && npm run build`) before deployment
+9. After scaffolding, verify build passes (`npm install && npm audit && npm run build`) before deployment
+10. ALWAYS call `get_code_template("data-extraction")` before generating data-extraction.ts — follow the class-based Extractor pattern exactly
+11. ALWAYS call `validate_metadata` on generated metadata JSON before finalizing
+12. Use `get_decision_guide` for each of the 15 engineering decisions alongside web research
 
 User's request: $ARGUMENTS

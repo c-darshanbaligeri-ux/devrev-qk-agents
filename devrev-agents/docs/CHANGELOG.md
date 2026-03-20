@@ -6,6 +6,50 @@ Track every improvement made to DevRev agent skills based on real usage feedback
 
 <!-- New entries go at the top -->
 
+## v1.2.0 — 2026-03-20
+
+### Snap-in Builder MCP integration
+
+Integrated the Snap-in Builder MCP server as a required dependency for all snap-in commands. This adds 9 MCP tools for on-demand guide content, metadata validation, code templates, and architectural decision lookups — keeping AI context lean while providing comprehensive AirSync knowledge.
+
+#### MCP server requirement
+- **Trigger**: Snap-in commands relied solely on embedded reference files for AirSync knowledge. No runtime validation of generated metadata, no targeted code pattern lookups, no searchable guide content.
+- **Change**: All snap-in commands now require the Snap-in Builder MCP server. Commands check for MCP connectivity at startup and provide setup instructions if not connected.
+- **Files changed**: `commands/build-snapin.md`, `skills/devrev-snapin-architect/SKILL.md`, `agents/snapin-architect.md`, `CLAUDE.md`, `README.md` (root + inner)
+- **Setup**: `claude mcp add snapin-builder --transport http -s project <MCP_SERVER_URL>/mcp`
+
+#### 3 new commands
+- **`/devrev:update-snapin`** — Targeted modifications to existing snap-ins (add entity, fix pagination, switch auth, add attachments, add bidirectional loading). Reads existing project first, uses MCP tools for the right patterns, validates metadata after changes.
+- **`/devrev:generate-metadata`** — Standalone metadata and mapping JSON generation with `validate_metadata` and `get_devrev_object_schema` MCP tools. Requires both Snap-in Builder MCP and AirSync MCP (`chef-cli`).
+- **`/devrev:search-guide`** — Quick reference lookup using targeted MCP tools (`get_decision_guide`, `get_code_template`, `get_devrev_object_schema`, `search_snapin_guide`).
+- **Files added**: `commands/update-snapin.md`, `commands/generate-metadata.md`, `commands/search-guide.md`
+- **Files changed**: `.claude-plugin/plugin.json` (root + inner) — added 3 new command entries
+
+#### Enhanced snap-in architect with MCP tools
+- **Trigger**: Architect skill had all AirSync knowledge baked into static reference files. No way to validate metadata at generation time, no targeted code pattern retrieval.
+- **Change**: Architect now calls MCP tools at key workflow steps:
+  - `get_decision_guide` during Phase 2 (Research) for each engineering decision
+  - `get_code_template` during Phase 4 (Generate code) for each system-specific file
+  - `get_devrev_object_schema` before generating metadata JSON
+  - `validate_metadata` after generating metadata JSON — fix and re-validate until clean
+- **Files changed**: `skills/devrev-snapin-architect/SKILL.md` (MCP tools table, Phase 2/4 integration), `agents/snapin-architect.md` (3 new critical rules)
+
+#### MCP tools reference
+- **File added**: `skills/devrev-snapin-architect/references/mcp-tools.md`
+- **Change**: Complete reference for all 9 MCP tools with parameters, available templates (18 code patterns), and when to use each. Referenced by the architect agent and skill.
+
+#### data-extraction.ts mandatory structure rules
+- **Trigger**: Generated data-extraction.ts files sometimes used flat inline blocks, duplicated error handling, or emitted Progress after each entity — violating SDK best practices.
+- **Change**: Added explicit rules to architect skill and agent:
+  - Class-based `<System>Extractor` with per-entity private methods
+  - `extractData()` orchestrator with switch/case in dependency order
+  - Centralized `emitError()` method (rate limit → Delayed, else → Error)
+  - Nested children inline pattern for comments/attachments
+  - Anti-patterns: never flat inline blocks, never emit Progress per entity, never duplicate error handling
+- **Files changed**: `skills/devrev-snapin-architect/SKILL.md` (rule 13), `agents/snapin-architect.md` (rule 11), `commands/build-snapin.md` (rule 10)
+
+---
+
 ## v1.1.0 — 2026-03-20
 
 ### Single-command install and self-update

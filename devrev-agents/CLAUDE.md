@@ -8,6 +8,9 @@ AI-powered agents for building on DevRev's AgentOS platform. Plan, build, and te
 - `/devrev:plan-snapin` — Plan a snap-in or AirSync connector (PM agent)
 - `/devrev:build-snapin` — Build complete deployable snap-in code (Architect agent)
 - `/devrev:test-snapin` — Test with unit tests + UI automation (Tester agent)
+- `/devrev:update-snapin` — Update an existing snap-in (add entity, fix pagination, switch auth)
+- `/devrev:generate-metadata` — Generate metadata + mapping JSON with validation
+- `/devrev:search-guide` — Quick reference lookup for AirSync patterns
 
 ### Implementation vertical
 - `/devrev:plan-implementation` — Plan dashboards, widgets, analytics (PM agent)
@@ -41,6 +44,7 @@ Each agent hands off to the next with a structured brief. Bugs flow back upstrea
 - **Batching**: `adapter.initializeRepos(repos)` + `adapter.getRepo("type").push(items)` — SDK batches automatically
 - **Mapping**: `chef-cli configure-mappings` generates `initial_domain_mapping.json`
 - **Metadata**: `chef-cli validate-metadata` validates `external_domain_metadata.json`
+- **Snap-in Builder MCP**: Required for snap-in commands. Provides `validate_metadata`, `get_code_template` (18 patterns), `get_decision_guide`, `scaffold_snapin`, `get_devrev_object_schema`, and guide search. Setup: `claude mcp add snapin-builder --transport http -s project <MCP_SERVER_URL>/mcp`
 - **Dashboard creation**: Widget JSON → widget-preview → widget ID → dashboard-preview → dashboard ID
 - **Widget JSON**: data_sources (oasis) → dimensions + measures → sub_widgets → visualization
 - **SQL rules**: No SELECT *, no table aliases in sql_expression, list every column, fully qualify all references
