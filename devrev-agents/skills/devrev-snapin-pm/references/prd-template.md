@@ -2,7 +2,7 @@
 
 Grounded in real DevRev PRDs (Planhat Airdrop, Snowflake ADaaS). Follow this structure. Sections marked [OPTIONAL] include when contextually relevant.
 
-When examining real PRDs provided by the user (uploaded to `references/examples/`), study them to match the tone, depth, and format of the user's team.
+When examining real PRDs provided by the user (in the `examples/` directory at the plugin root), study them to match the tone, depth, and format of the user's team.
 
 ---
 

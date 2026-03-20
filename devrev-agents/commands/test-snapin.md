@@ -1,4 +1,5 @@
 ---
+name: devrev:test-snapin
 description: Test a DevRev snap-in or AirSync connector. Two modes — (1) unit tests with Jest covering normalization, mapping, errors, state, timeout, (2) UI automation using browser to install snap-in, create test data, configure mapping screen, run sync, and verify imported data field-by-field. Use for any DevRev snap-in testing, QA, or verification.
 ---
 

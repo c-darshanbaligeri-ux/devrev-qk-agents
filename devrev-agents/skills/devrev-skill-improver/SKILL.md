@@ -45,8 +45,8 @@ Map the error to the exact file:
 | Wrong PRD/TDD format | `skills/devrev-snapin-pm/references/prd-template.md` or `tdd-template.md` |
 | Wrong discovery question | `skills/devrev-snapin-pm/references/discovery-questions.md` |
 | Wrong ADaaS flow understanding | `skills/devrev-snapin-pm/references/adaas-flow.md` |
-| Wrong manifest syntax | `skills/devrev-snapin-architect/references/simple-snapin.md` or `airsync-snapin.md` |
-| Wrong SDK usage pattern | `skills/devrev-snapin-architect/references/airsync-snapin.md` |
+| Wrong manifest syntax | `skills/devrev-snapin-architect/references/simple-snapin.md` or `airsync-template.md` |
+| Wrong SDK usage pattern | `skills/devrev-snapin-architect/references/airsync-template.md` |
 | Wrong CLI command | `skills/devrev-snapin-architect/references/cli-workflow.md` |
 | Missing decision in research | `skills/devrev-snapin-architect/SKILL.md` (Phase 2 or Phase 3) |
 | Wrong test pattern | `skills/devrev-snapin-tester/references/unit-testing.md` |
@@ -112,7 +112,7 @@ After each update, append to a learning log. Create or update `docs/CHANGELOG.md
 - Pagination parameter names wrong
 - Rate limit values outdated
 
-**Fix location**: architect's reference files (simple-snapin.md or airsync-snapin.md)
+**Fix location**: architect's reference files (simple-snapin.md or airsync-template.md)
 
 ### SDK mistakes
 - Wrong import path for @devrev/ts-adaas
@@ -120,7 +120,7 @@ After each update, append to a learning log. Create or update `docs/CHANGELOG.md
 - Wrong event type enum value
 - SDK version changed, method signature different
 
-**Fix location**: architect's airsync-snapin.md or simple-snapin.md
+**Fix location**: architect's airsync-template.md or simple-snapin.md
 
 ### Platform behavior mistakes
 - Timeout behavior different than documented
@@ -128,7 +128,7 @@ After each update, append to a learning log. Create or update `docs/CHANGELOG.md
 - Event payload structure different
 - Sync timestamp field name wrong
 
-**Fix location**: architect's SKILL.md (critical rules) or airsync-snapin.md
+**Fix location**: architect's SKILL.md (critical rules) or airsync-template.md
 
 ### CLI mistakes
 - Command syntax changed

@@ -4,9 +4,40 @@ AI-powered agents that plan, build, and test snap-ins and connectors on DevRev's
 
 > **Stop building DevRev connectors manually.** These agents handle the full pipeline — from gathering requirements to generating deployable TypeScript code to running end-to-end tests.
 
+## Quick Setup (one command)
+
+### Claude Code
+
+```bash
+/plugin install --github QK-SnapIn/devrev-qk-agents
+```
+
+That's it. All 7 agents, 8 commands, and 7 skills are ready to use.
+
+### Update to latest
+
+```bash
+/devrev:update
+```
+
+### Local development
+
+```bash
+git clone https://github.com/QK-SnapIn/devrev-qk-agents.git
+cd devrev-qk-agents
+claude --plugin-dir .
+```
+
+### Cursor
+
+```bash
+git clone https://github.com/QK-SnapIn/devrev-qk-agents.git
+cp -r devrev-qk-agents/devrev-agents/skills/* /path/to/your/project/.cursor/skills/
+```
+
 ## What's inside
 
-### Snap-in vertical (v1.0 — ready)
+### Snap-in vertical (v1.0)
 
 | Agent | What it does |
 |-------|-------------|
@@ -14,7 +45,7 @@ AI-powered agents that plan, build, and test snap-ins and connectors on DevRev's
 | **Snap-in Architect** | Researches external APIs (never guesses), makes 15 engineering decisions, generates complete deployable projects using ADaaS SDK |
 | **Snap-in Tester** | Writes Jest unit tests, performs UI automation via browser to install snap-in, configure mapping, run sync, and verify imported data |
 
-### Implementation vertical (v1.1 — ready)
+### Implementation vertical (v1.1)
 
 | Agent | What it does |
 |-------|-------------|
@@ -22,56 +53,39 @@ AI-powered agents that plan, build, and test snap-ins and connectors on DevRev's
 | **Implementation Architect** | Generates complete widget JSON for widget-preview, assembles dashboard layouts, fixes existing widgets by diagnosing SQL/reference issues |
 | **Implementation Tester** | JSON validation checklist (catches 90% of errors before deployment) + UI verification via browser (widget-preview → dashboard-preview → Notebook cross-check) |
 
-## Installation
+### Cross-cutting
 
-### Claude Code
+| Agent | What it does |
+|-------|-------------|
+| **Skill Improver** | Diagnoses agent mistakes, traces errors to specific reference files, applies targeted fixes to prevent repeats |
 
-```bash
-# Direct from GitHub
-/plugin install --github QK-SnapIn/devrev-qk-agents
+## Commands
 
-# Or from marketplace (after publishing)
-/plugin marketplace add QK-SnapIn/devrev-qk-agents-marketplace
-/plugin install devrev-agents@devrev-agents-marketplace
-```
-
-### Local testing
-
-```bash
-git clone https://github.com/QK-SnapIn/devrev-qk-agents.git
-cd devrev-agents
-
-# Option 1: Install locally
-claude /plugin install --path .
-
-# Option 2: Session-only (no install)
-claude --plugin-dir .
-```
-
-### Cursor
-
-```bash
-# Copy skills into your project
-cp -r devrev-agents/skills/* /path/to/your/project/.cursor/skills/
-```
+| Command | What it does |
+|---------|-------------|
+| `/devrev:plan-snapin` | Plan a snap-in or AirSync connector (PM agent) |
+| `/devrev:build-snapin` | Build complete deployable snap-in code (Architect agent) |
+| `/devrev:test-snapin` | Test with unit tests + UI automation (Tester agent) |
+| `/devrev:plan-implementation` | Plan dashboards, widgets, analytics (PM agent) |
+| `/devrev:build-implementation` | Generate widget JSON + dashboard layout (Architect agent) |
+| `/devrev:test-implementation` | JSON validation + UI verification (Tester agent) |
+| `/devrev:improve-skill` | Report mistakes, update agent skills (Self-learning agent) |
+| `/devrev:update` | Update plugin to the latest version |
 
 ## Usage
 
-### Commands (explicit invoke)
-
 ```bash
-# Snap-in vertical
+# Plan a connector
 /devrev:plan-snapin Build an AirSync connector for HubSpot
-/devrev:build-snapin Implement the HubSpot connector from the approved TDD
-/devrev:test-snapin Write unit tests and run E2E test for the HubSpot connector
 
-# Implementation vertical
-/devrev:plan-implementation I need a support dashboard showing ticket volume, SLA compliance, and agent productivity
-/devrev:build-implementation Build the support dashboard from the approved spec
-/devrev:test-implementation Validate the widget JSON and verify metrics against Notebook
+# Build the code
+/devrev:build-snapin Implement the HubSpot connector from the approved TDD
+
+# Test it
+/devrev:test-snapin Write unit tests and run E2E test for the HubSpot connector
 ```
 
-### Natural language (skills auto-trigger)
+Or just use natural language:
 
 ```
 You: "I need to sync Asana tasks into DevRev"
@@ -97,29 +111,30 @@ You: "Test this connector end-to-end"
   Feasibility                     All files to disk                Ship/block
 ```
 
+Bugs flow back upstream:
+- **Code bugs** (wrong API call, bad manifest, SDK error) → back to **Architect**
+- **Requirements bugs** (missing field, wrong scope, unclear mapping) → back to **PM**
+- **Systematic agent errors** (skill produces same mistake repeatedly) → **Skill Improver**
+
 ## Real document examples
 
-The agents produce PRDs and TDDs matching actual DevRev team documents:
-- Slack ADaaS TDD — channel import with OAuth scopes, data mapping diagrams
-- Monday.com TDD — GraphQL API, 40+ column types, workspace/board mapping
-- Planhat PRD — bidirectional sync with persona query examples
-- Snowflake PRD — table-to-object mapping with JWT auth
-
-## Key technical decisions built into the agents
-
-- Uses `processTask({ task, onTimeout })` — SDK manages timeout, not manual tracking
-- `adapter.initializeRepos()` + `.push()` for automatic batching
-- Platform provides `lastSuccessfulSyncStarted` — no webhook registration
-- `chef-cli validate-metadata` + `configure-mappings` for AirSync
-- Architect researches real API docs before writing code (never hallucinates)
-- 15 engineering decisions documented before any code generation
+The agents produce PRDs and TDDs matching actual DevRev team documents. Examples in `devrev-agents/examples/`:
+- `example-slack-tdd.md` — Slack channel import with OAuth scopes, data mapping diagrams
+- `example-monday-tdd.md` — Monday.com GraphQL API, 20 column types, workspace/board mapping
+- `example-planhat-prd.md` — Planhat bidirectional sync with 10 object types
+- `example-snowflake-prd.md` — Snowflake table-to-object mapping with JWT + OAuth auth
+- `example-trello-prd.md` — Trello board/card import PRD
+- `example-trello-tdd.md` — Trello AirSync connector TDD
 
 ## Contributing
 
 1. Fork the repo
 2. Test locally: `claude --plugin-dir .`
 3. Make changes to skills/agents/commands
-4. Submit a PR
+4. Fix skill issues with `/devrev:improve-skill <what went wrong>`
+5. Submit a PR
+
+See [CONTRIBUTING.md](devrev-agents/CONTRIBUTING.md) for the full guide.
 
 ## License
 

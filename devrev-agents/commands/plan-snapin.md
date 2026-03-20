@@ -1,4 +1,5 @@
 ---
+name: devrev:plan-snapin
 description: Plan a DevRev snap-in or AirSync connector. Gathers requirements, creates PRD and TDD following real DevRev document patterns, gets explicit approval before any code is written. Use for any DevRev snap-in planning, requirements gathering, or connector feasibility assessment.
 ---
 

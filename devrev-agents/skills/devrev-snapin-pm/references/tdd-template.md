@@ -2,7 +2,7 @@
 
 Grounded in real DevRev TDDs (Slack ADaaS, Monday.com Integration). Follow this structure closely. The TDD translates the PRD into architecture the snap-in architect can implement directly.
 
-When examining real TDDs provided by the user (uploaded to `references/examples/`), study them to match the format, depth, and section ordering of the user's team.
+When examining real TDDs provided by the user (in the `examples/` directory at the plugin root), study them to match the format, depth, and section ordering of the user's team.
 
 ---
 

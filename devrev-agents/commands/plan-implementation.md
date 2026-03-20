@@ -1,5 +1,5 @@
 ---
-name: plan-implementation
+name: devrev:plan-implementation
 description: Plan a DevRev dashboard or analytics widget. Gathers requirements, designs widget layout, produces structured specs. Handles both new dashboards and fixing existing ones.
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: test-implementation
+name: devrev:test-implementation
 description: Test DevRev dashboards and widgets. JSON validation before deployment + UI verification via browser. Verifies data accuracy against Notebook queries.
 ---
 
