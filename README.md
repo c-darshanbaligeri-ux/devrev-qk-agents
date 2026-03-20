@@ -4,29 +4,18 @@ AI-powered agents that plan, build, and test snap-ins and connectors on DevRev's
 
 > **Stop building DevRev connectors manually.** These agents handle the full pipeline — from gathering requirements to generating deployable TypeScript code to running end-to-end tests.
 
-## Quick Setup (one command)
+## Quick Setup
 
 ### Claude Code
 
 ```bash
-/plugin install --github QK-SnapIn/devrev-qk-agents
-```
-
-That's it. All 7 agents, 8 commands, and 7 skills are ready to use.
-
-### Update to latest
-
-```bash
-/devrev:update
-```
-
-### Local development
-
-```bash
 git clone https://github.com/QK-SnapIn/devrev-qk-agents.git
-cd devrev-qk-agents
-claude --plugin-dir .
+claude --plugin-dir ./devrev-qk-agents
 ```
+
+All 7 agents, 8 commands, and 7 skills are ready to use.
+
+To update to the latest version, pull the repo and restart Claude Code — or run `/devrev:update` from within a session.
 
 ### Cursor
 
